@@ -1,0 +1,51 @@
+def convert2num(source_str):
+    """
+    将输入的字符串中每个字母转换为ASCII值，通过统一转换为小写，来忽略大小写
+    :param source_str: 传入的字符串
+    :return: 返回ASCII值对应的列表
+    """
+    temp_list = []
+    for i in range(0, len(source_str)):
+        temp_list.append(ord(source_str[i].lower()))
+    return temp_list
+
+def convert2list(num_list):
+    """
+    将ASCII值对应的列表，按规定的规则，转换为字符串列表，最终将字符串列表，转换为字符串，并以逗号分隔开
+    :param num_list: ASCII值对应的列表
+    :return: 字符串
+    """
+
+    temp_str = ''
+    temp_list = []
+    count = 0
+    if len(num_list) == 0:
+        temp_str += '00000000'
+        temp_list.append(temp_str)
+        return temp_list
+    list_len = len(num_list)
+
+    # 计算循环的次数，为8的整数倍
+    if list_len % 8 == 0:
+        range_num = (list_len // 8) * 8
+    else:
+        range_num = ((list_len // 8) + 1) * 8
+
+    for i in range(range_num):
+        count += 1
+        try:
+            if i == 0:
+                temp_str += '1'
+            elif num_list[i] - num_list[i - 1] == 1:
+                temp_str += '1'
+            else:
+                temp_str += '0'
+        except IndexError:
+            temp_str += '0'
+        finally:
+            if count == 8:
+                temp_list.append(temp_str)
+                temp_str = ''
+                count = 0
+
+    return ','.join(temp_list)
